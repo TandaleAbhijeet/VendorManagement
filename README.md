@@ -12,19 +12,21 @@ Develop a Vendor Management System using Django and Django REST Framework. This 
 ### Installation Steps
 
 1. Clone the repository to your local machine:
-   git clone <repository_url>
+   git clone https://github.com/TandaleAbhijeet/VendorManagement.git
 
-2. Navigate to the project directory:
-   cd <project_directory>
 
-3. Create a virtual environment to isolate project dependencies:
+2. Create a virtual environment to isolate project dependencies:
    python3 -m venv venv
 
-4. Activate the virtual environment:
+3. Activate the virtual environment:
    - On Windows:
      venv\Scripts\activate
    - On macOS and Linux:
      source venv/bin/activate
+     
+4. Navigate to the project directory:
+   1.cd VendorManagement
+   2.cd vendorManagment 
 
 5. Install Django and Django REST Framework using pip:
    pip install django djangorestframework
