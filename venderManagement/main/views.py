@@ -64,7 +64,7 @@ class GetCreatevendor(APIView):
     def get(self,request):
         try:
             vendorDetails = Vendor.objects.all()
-            seralizer = vendorSerailzer(vendorDetails, many=True)     
+            seralizer = vendorDeatailsSeralizer(vendorDetails, many=True)     
             return Response({'status': status.HTTP_200_OK, 'data': seralizer.data, 'responseMessage': 'Data found Successfully'}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({'status':status.HTTP_500_INTERNAL_SERVER_ERROR,  'responseMessage': str(e)},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -78,7 +78,7 @@ class VendorOpration(APIView):
     @swagger_auto_schema(
         operation_summary="The Get vendor API, Retrive the data for Vendor by vendor_id",
         manual_parameters=[
-            openapi.Parameter('vendor_id', openapi.IN_PATH, type=openapi.TYPE_INTEGER,description='vendor_id is id of user'),
+            
             openapi.Parameter('Authorization', openapi.IN_HEADER, description='Authentication Token', default='Bearer ', type=openapi.TYPE_STRING),        ],
         
         responses={
@@ -90,7 +90,7 @@ class VendorOpration(APIView):
         try:
             if vendor_id is not None:
                 vendorDetails = Vendor.objects.get(id=vendor_id)
-                seralizer = vendorSerailzer(vendorDetails) 
+                seralizer = vendorDeatailsSeralizer(vendorDetails) 
                 return Response({'status': status.HTTP_200_OK, 'data': seralizer.data, 'responseMessage': 'Data found Successfully'}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({'status':status.HTTP_500_INTERNAL_SERVER_ERROR,  'responseMessage': str(e)},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -98,7 +98,7 @@ class VendorOpration(APIView):
     @swagger_auto_schema(
             operation_summary="The Update Vendor API, Update the Vendor profile ",
         manual_parameters=[
-            openapi.Parameter('vendor_id', openapi.IN_PATH, type=openapi.TYPE_INTEGER,description='vendor_id is id of user'),
+            
             openapi.Parameter('Authorization', openapi.IN_HEADER, description='Authentication Token', default='Bearer ', type=openapi.TYPE_STRING),
 
         ],
@@ -129,7 +129,7 @@ class VendorOpration(APIView):
     @swagger_auto_schema(
         operation_summary="The delete Vendor API, Delete the Vendor by vendor_id",
         manual_parameters=[
-            openapi.Parameter('vendor_id', openapi.IN_PATH, type=openapi.TYPE_INTEGER, description='vendor_id is id of user'),
+            
             openapi.Parameter('Authorization', openapi.IN_HEADER, description='Authentication Token', default='Bearer ', type=openapi.TYPE_STRING),
         ],
         
@@ -154,26 +154,26 @@ class VendorOpration(APIView):
 
 
 class GetCreatePurchaseOrder(APIView):
-    @swagger_auto_schema(request_body=openapi.Schema(
-        operation_summary="Create a purches order API , create a purches order and assign to the vendor",
+    @swagger_auto_schema(
+        request_body=openapi.Schema(
+            operation_summary="Create a purchase order API, create a purchase order and assign it to the vendor",
+            type=openapi.TYPE_OBJECT,
+            properties={
+                'vendor': openapi.Schema(type=openapi.TYPE_INTEGER, default=1),
+                'delivery_date': openapi.Schema(type=openapi.TYPE_STRING, format=openapi.FORMAT_DATETIME),
+                'items': openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        'name': openapi.Schema(type=openapi.TYPE_STRING),
+                        'price': openapi.Schema(type=openapi.TYPE_NUMBER, format=openapi.FORMAT_FLOAT),
+                        'quantity': openapi.Schema(type=openapi.TYPE_INTEGER),
+                    }
+                ))
+            }
+        ),
         manual_parameters=[
             openapi.Parameter('Authorization', openapi.IN_HEADER, description='Authentication Token', default='Bearer ', type=openapi.TYPE_STRING),
-        ],
-        type=openapi.TYPE_OBJECT,
-        properties={
-            'vendor': openapi.Schema(type=openapi.TYPE_INTEGER,default=1),
-            'delivery_date': openapi.Schema(type=openapi.TYPE_STRING, format=openapi.FORMAT_DATETIME),
-            'items': openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(
-                type=openapi.TYPE_OBJECT,
-                properties={
-                    'name': openapi.Schema(type=openapi.TYPE_STRING),
-                    'price': openapi.Schema(type=openapi.TYPE_NUMBER, format=openapi.FORMAT_FLOAT),
-                    'quantity': openapi.Schema(type=openapi.TYPE_INTEGER),
-                }
-            ))
-        }
-        
-    )
+        ]
     )
     def post(self,request):
         try:

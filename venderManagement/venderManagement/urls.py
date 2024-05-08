@@ -39,7 +39,7 @@ urlpatterns = [
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     # ============ Vender Urls ================
     path('api/vendors/',GetCreatevendor.as_view()),
-    path('api/vendors/<int:vender_id>',VendorOpration.as_view()),
+    path('api/vendors/<int:vendor_id>',VendorOpration.as_view()),
 
     # =============== PurchesOrder Urls =============
     path('api/purchase_orders/',GetCreatePurchaseOrder.as_view()),
